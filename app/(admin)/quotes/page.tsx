@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import ClientSelect from '@/components/ClientSelect'
 
 export default async function QuotesPage({
   searchParams,
@@ -30,7 +31,7 @@ export default async function QuotesPage({
     <div>
       <h1 className="text-2xl font-bold mb-6">Quotes</h1>
 
-      <div className="flex gap-3 mb-6 flex-wrap">
+      <div className="flex gap-3 mb-6 flex-wrap items-center">
         <a href="/quotes" className={`px-3 py-1.5 rounded text-sm border border-border ${!sp.status && !sp.client ? 'bg-surface text-text' : 'text-text-muted hover:text-text'}`}>
           All
         </a>
@@ -44,21 +45,7 @@ export default async function QuotesPage({
           </a>
         ))}
 
-        <select
-          className="form-input w-auto ml-auto"
-          defaultValue={sp.client || ''}
-          onChange={(e) => {
-            const url = new URL(window.location.href)
-            if (e.target.value) url.searchParams.set('client', e.target.value)
-            else url.searchParams.delete('client')
-            window.location.href = url.toString()
-          }}
-        >
-          <option value="">All clients</option>
-          {clients?.map((c: any) => (
-            <option key={c.slug} value={c.slug}>{c.company_name}</option>
-          ))}
-        </select>
+        <ClientSelect clients={clients || []} currentClient={sp.client || ''} currentStatus={sp.status || ''} />
       </div>
 
       <div className="bg-surface border border-border rounded-lg overflow-hidden">
