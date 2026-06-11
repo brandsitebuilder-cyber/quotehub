@@ -9,6 +9,7 @@ interface QuoteNotification {
   serviceType?: string
   message?: string
   timeline?: string
+  customFields?: Record<string,string>
   estimatedAmount?: number | null
   sourceUrl?: string
 }
@@ -25,6 +26,11 @@ export async function sendQuoteNotification(data: QuoteNotification) {
   const messageLine = data.message ? `<p><strong>Message:</strong><br/>${data.message.replace(/\n/g, '<br/>')}</p>` : ''
   const sourceLine = data.sourceUrl ? `<p><strong>Source:</strong> ${data.sourceUrl}</p>` : ''
   const timelineLine = data.timeline ? `<p><strong>Timeline:</strong> ${data.timeline}</p>` : ''
+  const customFieldsLines = data.customFields
+    ? Object.entries(data.customFields)
+        .map(([k,v]) => `<p><strong>${k.replace(/_/g,' ').replace(/\b\w/g, c => c.toUpperCase())}:</strong> ${v}</p>`)
+        .join('')
+    : ''
 
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
@@ -35,6 +41,7 @@ export async function sendQuoteNotification(data: QuoteNotification) {
         ${phoneLine}
         ${serviceLine}
         ${timelineLine}
+        ${customFieldsLines}
         ${sourceLine}
         ${amountLine}
         ${messageLine}

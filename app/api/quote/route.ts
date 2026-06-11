@@ -6,7 +6,16 @@ import { autoCalculate } from '@/lib/pricing'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    const KNOWN = new Set(['client_slug','customer_name','customer_email','customer_phone','service_type','message','source_url','timeline'])
     const { client_slug, customer_name, customer_email, customer_phone, service_type, message, source_url, timeline } = body
+
+    // Capture any extra fields as custom_fields
+    const custom_fields: Record<string,string> = {}
+    for (const [k,v] of Object.entries(body)) {
+      if (!KNOWN.has(k) && typeof v === 'string' && v) {
+        custom_fields[k] = v
+      }
+    }
 
     if (!client_slug || !customer_name) {
       return NextResponse.json(
@@ -49,6 +58,7 @@ export async function POST(request: NextRequest) {
         message: message || null,
         source_url: source_url || null,
         timeline: timeline || null,
+        custom_fields: Object.keys(custom_fields).length > 0 ? custom_fields : null,
         status: 'new',
       })
       .select()
@@ -97,6 +107,7 @@ export async function POST(request: NextRequest) {
       estimatedAmount,
       sourceUrl: source_url,
       timeline,
+      customFields: Object.keys(custom_fields).length > 0 ? custom_fields : undefined,
     })
 
     // Update status
