@@ -6,7 +6,7 @@ import { autoCalculate } from '@/lib/pricing'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { client_slug, customer_name, customer_email, customer_phone, service_type, message, source_url } = body
+    const { client_slug, customer_name, customer_email, customer_phone, service_type, message, source_url, timeline } = body
 
     if (!client_slug || !customer_name) {
       return NextResponse.json(
@@ -48,6 +48,7 @@ export async function POST(request: NextRequest) {
         service_type: service_type || null,
         message: message || null,
         source_url: source_url || null,
+        timeline: timeline || null,
         status: 'new',
       })
       .select()
@@ -95,6 +96,7 @@ export async function POST(request: NextRequest) {
       message,
       estimatedAmount,
       sourceUrl: source_url,
+      timeline,
     })
 
     // Update status

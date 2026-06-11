@@ -8,6 +8,7 @@ interface QuoteNotification {
   customerPhone?: string
   serviceType?: string
   message?: string
+  timeline?: string
   estimatedAmount?: number | null
   sourceUrl?: string
 }
@@ -23,6 +24,7 @@ export async function sendQuoteNotification(data: QuoteNotification) {
   const phoneLine = data.customerPhone ? `<p><strong>Phone:</strong> ${data.customerPhone}</p>` : ''
   const messageLine = data.message ? `<p><strong>Message:</strong><br/>${data.message.replace(/\n/g, '<br/>')}</p>` : ''
   const sourceLine = data.sourceUrl ? `<p><strong>Source:</strong> ${data.sourceUrl}</p>` : ''
+  const timelineLine = data.timeline ? `<p><strong>Timeline:</strong> ${data.timeline}</p>` : ''
 
   const html = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
@@ -32,6 +34,7 @@ export async function sendQuoteNotification(data: QuoteNotification) {
         ${data.customerEmail ? `<p><strong>Email:</strong> <a href="mailto:${data.customerEmail}">${data.customerEmail}</a></p>` : ''}
         ${phoneLine}
         ${serviceLine}
+        ${timelineLine}
         ${sourceLine}
         ${amountLine}
         ${messageLine}
