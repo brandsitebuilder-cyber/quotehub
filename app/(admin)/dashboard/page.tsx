@@ -11,6 +11,10 @@ export default async function DashboardPage() {
     .select('*', { count: 'exact', head: true })
     .gte('created_at', new Date().toISOString().split('T')[0])
 
+  // Click stats
+  const { count: totalCalls } = await supabase.from('click_events').select('*', { count: 'exact', head: true }).eq('action_type', 'call')
+  const { count: totalWhatsapps } = await supabase.from('click_events').select('*', { count: 'exact', head: true }).eq('action_type', 'whatsapp')
+
   const { data: recent } = await supabase
     .from('quote_requests')
     .select('*, brand_clients!inner(company_name, slug)')
@@ -21,18 +25,26 @@ export default async function DashboardPage() {
     <div>
       <h1 className="text-2xl font-bold mb-8">Dashboard</h1>
 
-      <div className="grid grid-cols-3 gap-6 mb-10">
-        <div className="bg-surface border border-border rounded-lg p-6">
+      <div className="grid grid-cols-5 gap-4 mb-10">
+        <div className="bg-surface border border-border rounded-lg p-4">
           <div className="text-text-muted text-sm">Total Quotes</div>
           <div className="text-3xl font-bold mt-1">{totalQuotes || 0}</div>
         </div>
-        <div className="bg-surface border border-border rounded-lg p-6">
+        <div className="bg-surface border border-border rounded-lg p-4">
           <div className="text-text-muted text-sm">Active Clients</div>
           <div className="text-3xl font-bold mt-1">{totalClients || 0}</div>
         </div>
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="text-text-muted text-sm">Today</div>
+        <div className="bg-surface border border-border rounded-lg p-4">
+          <div className="text-text-muted text-sm">Quotes Today</div>
           <div className="text-3xl font-bold mt-1">{newToday || 0}</div>
+        </div>
+        <div className="bg-surface border border-border rounded-lg p-4">
+          <div className="text-text-muted text-sm">📞 Call Clicks</div>
+          <div className="text-3xl font-bold mt-1">{totalCalls || 0}</div>
+        </div>
+        <div className="bg-surface border border-border rounded-lg p-4">
+          <div className="text-text-muted text-sm">💬 WhatsApp Clicks</div>
+          <div className="text-3xl font-bold mt-1">{totalWhatsapps || 0}</div>
         </div>
       </div>
 
