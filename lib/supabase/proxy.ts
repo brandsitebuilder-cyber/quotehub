@@ -21,11 +21,12 @@ export async function updateSession(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Public routes: login page, quote API, and track API
+  // Public routes: login page, quote API, track API, and redirect tracker
   const isPublic =
     request.nextUrl.pathname.startsWith('/login') ||
     request.nextUrl.pathname.startsWith('/api/quote') ||
-    request.nextUrl.pathname.startsWith('/api/track')
+    request.nextUrl.pathname.startsWith('/api/track') ||
+    request.nextUrl.pathname.startsWith('/api/r')
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone()

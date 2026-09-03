@@ -29,7 +29,7 @@ export default async function QuotesPage({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Quotes</h1>
+      <h1 className="text-2xl font-bold mb-6">Leads</h1>
 
       <div className="flex gap-3 mb-6 flex-wrap items-center">
         <a href="/quotes" className={`px-3 py-1.5 rounded text-sm border border-border ${!sp.status && !sp.client ? 'bg-surface text-text' : 'text-text-muted hover:text-text'}`}>
@@ -86,7 +86,7 @@ export default async function QuotesPage({
             ))}
             {(!quotes || quotes.length === 0) && (
               <tr>
-                <td colSpan={6} className="p-8 text-center text-text-muted">No quotes found.</td>
+                <td colSpan={6} className="p-8 text-center text-text-muted">No leads found.</td>
               </tr>
             )}
           </tbody>

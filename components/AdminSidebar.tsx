@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 
 const navItems = [
   { label: 'Dashboard', href: '/dashboard' },
-  { label: 'Quotes', href: '/quotes' },
+  { label: 'Leads', href: '/quotes' },
   { label: 'Clicks', href: '/clicks' },
   { label: 'Clients', href: '/clients' },
   { label: 'Stats', href: '/stats' },
@@ -57,6 +57,15 @@ export default function AdminSidebar({ email }: { email: string }) {
               {item.label}
             </Link>
           ))}
+          <a
+            href="https://invoice.brandaisolutions.co.za"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            className="block px-3 py-2 rounded transition-colors text-sm text-accent hover:text-text hover:bg-bg"
+          >
+            Quotes &amp; Invoices ↗
+          </a>
         </nav>
         <div className="pt-4 border-t border-border">
           <div className="text-xs text-text-muted truncate">{email}</div>
