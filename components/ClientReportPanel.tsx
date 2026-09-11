@@ -66,12 +66,12 @@ export default function ClientReportPanel({
   }
 
   async function sendTest() {
-    const data = await call('test', { to: 'marcus@rocketmail.com' })
+    const data = await call('test', { to: 'marcus@brandaisolutions.co.za' })
     if (data) {
       setMsg({
         kind: data.success ? 'ok' : 'err',
         text: data.success
-          ? `Test sent to marcus@rocketmail.com — ${data.period}, ${data.contacts} contacts`
+          ? `Test sent to marcus@brandaisolutions.co.za — ${data.period}, ${data.contacts} contacts`
           : `Not sent: ${data.reason || 'unknown reason'}`,
       })
     }

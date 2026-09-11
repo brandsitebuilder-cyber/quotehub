@@ -7,7 +7,7 @@ import { buildActivityReportEmail, sendActivityReport } from '@/lib/report-email
 
 export const dynamic = 'force-dynamic'
 
-const TEST_RECIPIENT = 'marcus@rocketmail.com'
+const TEST_RECIPIENT = 'marcus@brandaisolutions.co.za'
 
 /**
  * Admin-only actions for a client's activity report:
