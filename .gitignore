@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local secrets / test artefacts (never commit)
+.env*.local
+.local-report-token
+.local-token

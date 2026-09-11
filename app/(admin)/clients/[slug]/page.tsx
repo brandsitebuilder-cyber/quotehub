@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ClientStatusPanel from '@/components/ClientStatusPanel'
+import ClientReportPanel from '@/components/ClientReportPanel'
 
 export default async function ClientDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const supabase = await createClient()
@@ -61,6 +62,14 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ s
         statusNote={client.status_note}
         leadCount={quoteCount || 0}
         clickCount={clickCount || 0}
+      />
+
+      <ClientReportPanel
+        slug={client.slug}
+        companyName={client.company_name}
+        token={client.report_token || null}
+        enabled={Boolean(client.report_enabled)}
+        recipient={client.report_recipient_email || null}
       />
 
       {/* Stats */}

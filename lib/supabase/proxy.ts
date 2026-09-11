@@ -26,7 +26,9 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/login') ||
     request.nextUrl.pathname.startsWith('/api/quote') ||
     request.nextUrl.pathname.startsWith('/api/track') ||
-    request.nextUrl.pathname.startsWith('/api/r')
+    request.nextUrl.pathname.startsWith('/api/r') ||
+    request.nextUrl.pathname.startsWith('/value') ||
+    request.nextUrl.pathname.startsWith('/api/reports')
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone()
