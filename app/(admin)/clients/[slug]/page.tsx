@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import ClientStatusPanel from '@/components/ClientStatusPanel'
 
 export default async function ClientDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const supabase = await createClient()
@@ -40,12 +41,27 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ s
     .select('*', { count: 'exact', head: true })
     .eq('client_id', client.id)
 
+  const { count: clickCount } = await supabase
+    .from('click_events')
+    .select('*', { count: 'exact', head: true })
+    .eq('client_id', client.id)
+
   return (
     <div>
       <div className="flex items-center gap-4 mb-6">
         <Link href="/clients" className="text-text-muted hover:text-text text-sm">← Clients</Link>
         <h1 className="text-2xl font-bold">{client.company_name}</h1>
       </div>
+
+      <ClientStatusPanel
+        slug={client.slug}
+        companyName={client.company_name}
+        status={client.status || 'review'}
+        monthlyFee={client.monthly_fee}
+        statusNote={client.status_note}
+        leadCount={quoteCount || 0}
+        clickCount={clickCount || 0}
+      />
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4 mb-8">

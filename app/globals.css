@@ -83,3 +83,8 @@ select.form-input {
 .badge-estimated { background: rgba(200,150,62,0.15); color: #C8963E; }
 .badge-forwarded { background: rgba(34,197,94,0.15); color: #4ade80; }
 .badge-archived { background: rgba(107,114,128,0.15); color: #9ca3af; }
+
+.badge-active { background: rgba(34,197,94,0.15); color: #4ade80; }
+.badge-one-off { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.badge-demo { background: rgba(168,85,247,0.15); color: #c084fc; }
+.badge-review { background: rgba(245,158,11,0.15); color: #fbbf24; }
