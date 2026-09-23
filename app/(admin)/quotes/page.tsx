@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import ClientSelect from '@/components/ClientSelect'
+import LeadSignal from '@/components/LeadSignal'
 
 export default async function QuotesPage({
   searchParams,
@@ -55,6 +56,7 @@ export default async function QuotesPage({
               <th className="p-3 font-medium">Customer</th>
               <th className="p-3 font-medium">Client</th>
               <th className="p-3 font-medium">Service</th>
+              <th className="p-3 font-medium">Signal</th>
               <th className="p-3 font-medium">Status</th>
               <th className="p-3 font-medium text-right">Amount</th>
               <th className="p-3 font-medium">Date</th>
@@ -72,6 +74,15 @@ export default async function QuotesPage({
                 <td className="p-3 text-text-muted">{q.brand_clients?.company_name}</td>
                 <td className="p-3">{q.service_type || '—'}</td>
                 <td className="p-3">
+                  <LeadSignal
+                    isLead={q.ai_is_lead}
+                    confidence={q.ai_confidence}
+                    service={q.ai_service}
+                    urgency={q.ai_urgency}
+                    scoredAt={q.ai_scored_at}
+                  />
+                </td>
+                <td className="p-3">
                   <span className={`px-2 py-0.5 rounded-full text-xs ${q.status === 'new' ? 'badge-new' : q.status === 'estimated' ? 'badge-estimated' : q.status === 'forwarded' ? 'badge-forwarded' : 'badge-archived'}`}>
                     {q.status}
                   </span>
@@ -86,7 +97,7 @@ export default async function QuotesPage({
             ))}
             {(!quotes || quotes.length === 0) && (
               <tr>
-                <td colSpan={6} className="p-8 text-center text-text-muted">No leads found.</td>
+                <td colSpan={7} className="p-8 text-center text-text-muted">No leads found.</td>
               </tr>
             )}
           </tbody>

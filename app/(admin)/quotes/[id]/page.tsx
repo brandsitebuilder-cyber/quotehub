@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import LeadSignal from '@/components/LeadSignal'
 
 export default async function QuoteDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createClient()
@@ -52,6 +53,19 @@ export default async function QuoteDetailPage({ params }: { params: Promise<{ id
           )}
           <div><span className="text-text-muted text-sm">Date:</span> {new Date(quote.created_at).toLocaleString()}</div>
           {quote.source_url && <div><span className="text-text-muted text-sm">Source:</span> <a href={quote.source_url} target="_blank" className="text-accent hover:underline text-sm">{quote.source_url}</a></div>}
+        </div>
+
+        {/* Enquiry signal (Jev classifier) */}
+        <div className="bg-surface border border-border rounded-lg p-6 space-y-3">
+          <h2 className="text-lg font-semibold mb-2">Enquiry signal</h2>
+          <LeadSignal
+            isLead={quote.ai_is_lead}
+            confidence={quote.ai_confidence}
+            service={quote.ai_service}
+            urgency={quote.ai_urgency}
+            scoredAt={quote.ai_scored_at}
+            detail
+          />
         </div>
 
         {/* Client info */}

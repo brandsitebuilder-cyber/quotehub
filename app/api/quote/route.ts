@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendQuoteNotification } from '@/lib/email'
 import { autoCalculate } from '@/lib/pricing'
+import { scoreLead, scoreToColumns } from '@/lib/lead-score'
 
 export async function POST(request: NextRequest) {
   try {
@@ -67,6 +68,20 @@ export async function POST(request: NextRequest) {
     if (insertError) {
       console.error('Insert error:', insertError)
       throw insertError
+    }
+
+    // Score the enquiry (Jev decision layer). No-op unless JEV_LEAD_SCORING=1.
+    // Never blocks or fails the capture: a failure returns null and the lead
+    // is stored exactly as before, just without the ai_* columns filled in.
+    const score = await scoreLead({
+      serviceType: service_type,
+      message,
+      timeline,
+      sourceUrl: source_url,
+      customFields: Object.keys(custom_fields).length > 0 ? custom_fields : null,
+    })
+    if (score) {
+      await supabase.from('quote_requests').update(scoreToColumns(score)).eq('id', quote.id)
     }
 
     // Auto-calculate if enabled
